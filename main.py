@@ -61,6 +61,7 @@ def get_cup_order_from_arduino (ser,level):
     # print(answer)
     print (clean_cups_reading)
     print("got arduinodata")
+    return clean_cups_reading
 
 def removetresh (cup_read):
     cup_to_parts=cup_read.split(':')
@@ -69,6 +70,15 @@ def removetresh (cup_read):
     new_second_step = new_first_step_to_parts[0]  ## remove '\r\n' part
     return new_second_step
 
+def is_correct_order (self,ser,level,picture): ## comper between picture and arduino read
+    arduino_read=get_cup_order_from_arduino (ser,level)
+    picture_dictionary={'pic1':['Reader 1: B1 DD 27 83','Reader 2: 93 90 24 83','Reader 3: 51 1E 2A 83'],'pic2':[]}
+    is_correct=1
+    for i in range (len(arduino_read)):
+        if picture_dictionary.get(picture)[i] != arduino_read[i]:
+            is_correct = 0
+            break
+    return is_correct
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
